@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Environment variables (API KEYS - NEVER push this!)
+.env
+.env.local
+.env.production
+
+# Build output
+dist/
+
+# Editor files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

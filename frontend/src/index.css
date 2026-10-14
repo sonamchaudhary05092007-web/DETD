@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/* ─── Magazine Theme: Custom Utilities ─── */
+@theme {
+  --font-headline: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Rich editorial color palette */
+  --color-brand-950: #1a0a0a;
+  --color-brand-900: #3b0f0f;
+  --color-brand-800: #6b1c1c;
+  --color-brand-700: #8b2525;
+  --color-brand-600: #a83232;
+  --color-brand-100: #fef2f2;
+  --color-brand-50: #fff8f8;
+
+  --color-cream: #faf7f2;
+  --color-ivory: #f5f0e8;
+  --color-parchment: #ede8df;
+
+  --color-gold-600: #b8860b;
+  --color-gold-500: #d4a017;
+  --color-gold-400: #e8b930;
+  --color-gold-100: #fdf6e3;
+}
+
+/* ─── Smooth Scrolling & Selection ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #e8b93066;
+  color: #1a0a0a;
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+/* ─── Smooth Animations ─── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Animation utility classes */
+.animate-fadeInUp {
+  animation: fadeInUp 0.7s ease-out both;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out both;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.6s ease-out both;
+}
+
+/* Staggered delays for grid cards */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+
+/* Smooth card lift on hover */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+}
+
+/* Subtle image zoom on hover */
+.img-zoom {
+  transition: transform 0.7s ease;
+}
+.img-zoom:hover {
+  transform: scale(1.06);
+}
+
+/* Smooth shimmer loading */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0ebe4 25%, #faf7f2 50%, #f0ebe4 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
