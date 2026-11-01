@@ -20,8 +20,7 @@ export async function fetchLiveNews(category = "All") {
   const apiKey = import.meta.env.VITE_GNEWS_API_KEY;
 
   // 1. Check cache first to avoid burning API requests
-  if (newsCache[category] && (Date.now() - newsCache[category].timestamp < 15 * 60 * 1000)) {
-    return newsCache[category].data;
+if (newsCache[category] && (Date.now() - newsCache[category].timestamp < 5 * 60 * 1000)) {    return newsCache[category].data;
   }
 
   // If no API key configured, return null to use fallback
@@ -53,7 +52,7 @@ try {
       const cleanContent = fullText.replace(/\[\+\d+\s+chars\]$/, "").trim();
 
       return {
-        id: `gnews-${category}-${index}-${Date.now()}`,
+        id: btoa(item.url || item.title).slice(0, 30),
         title: item.title,
         category: category === "All" ? "National & World" : category,
         source: item.source?.name || "News Wire",
@@ -62,6 +61,7 @@ try {
           day: "numeric",
           year: "numeric"
         }),
+        timestamp: new Date(item.publishedAt).getTime(),
         readTime: "4 min read",
         originalUrl: item.url,
         // Real unique photo directly from the news publisher

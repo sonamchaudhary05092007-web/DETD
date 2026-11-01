@@ -7,7 +7,6 @@ const topics = [
   { id: 'Sports', emoji: '🏏', label: 'Sports' },
   { id: 'Environment & Climate', emoji: '🌍', label: 'Environment' },
   { id: 'Politics & Policy', emoji: '🏛️', label: 'Politics' },
-  { id: 'Entertainment', emoji: '🎬', label: 'Entertainment' },
   { id: 'Education', emoji: '🎓', label: 'Education' },
   { id: 'Engineering', emoji: '⚡', label: 'Engineering' },
 ];
@@ -34,18 +33,18 @@ export default function Onboarding({ onComplete }) {
 
         {/* Logo */}
         <div>
-          <div className="flex items-center justify-center gap-4 mb-2">
-            <div className="h-px w-14 bg-gradient-to-r from-transparent to-gold-500" />
-            <span className="text-gold-600 text-xs font-mono tracking-[0.3em] uppercase font-semibold">
-              Est. 1981
-            </span>
-            <div className="h-px w-14 bg-gradient-to-l from-transparent to-gold-500" />
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <img 
+              src="/narad-logo.jpg" 
+              alt="NARAD Logo" 
+              className="w-16 h-16 object-contain rounded-full shadow-md"
+            />
           </div>
           <h1 className="font-headline text-4xl sm:text-5xl font-black text-brand-950 tracking-tight">
-            The Dayalbagh Spectrum
+            NARAD
           </h1>
-          <p className="mt-1 text-stone-500 italic text-sm">
-            AI-Powered News Intelligence
+          <p className="mt-1 text-stone-500 text-[10px] font-mono tracking-[0.15em] uppercase">
+            Network for Adaptive, Reliable & Accessible Discovery
           </p>
         </div>
 
@@ -91,7 +90,7 @@ export default function Onboarding({ onComplete }) {
                 : 'bg-stone-300 cursor-not-allowed shadow-none'
             }`}
           >
-            Enter The Spectrum →
+            Enter NARAD →
           </button>
         </div>
       </div>

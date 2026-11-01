@@ -56,14 +56,15 @@ export default function App() {
         <div className="h-1 bg-gradient-to-r from-gold-500 via-brand-700 to-gold-500" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-12 bg-gold-500/40" />
-            <span className="text-gold-500 text-sm">◆</span>
-            <div className="h-px w-12 bg-gold-500/40" />
+            <img src="/narad-logo.jpg" alt="NARAD" className="w-10 h-10 rounded-full shadow-md" />
           </div>
           <h3 className="font-headline text-2xl font-bold text-white tracking-tight">
-            The Dayalbagh Spectrum
+            NARAD
           </h3>
-          <p className="text-stone-400 text-sm mt-2 font-light">
+          <p className="text-stone-400 text-[10px] mt-1 font-mono tracking-[0.15em] uppercase">
+            Network for Adaptive, Reliable & Accessible Discovery
+          </p>
+          <p className="text-stone-400 text-sm mt-3 font-light">
             Dayalbagh Educational Institute • Department of Electrical Engineering
           </p>
           <p className="text-stone-500 text-xs mt-3 font-mono tracking-wider uppercase">

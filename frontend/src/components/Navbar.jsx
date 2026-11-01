@@ -22,23 +22,25 @@ export default function Navbar({ activeTab, setActiveTab }) {
       </div>
 
       {/* Main Masthead */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center py-6 sm:py-8">
-        {/* Decorative element */}
-        <div className="flex items-center justify-center gap-4 mb-3">
-          <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold-500" />
-          <span className="text-gold-600 text-xs font-mono tracking-[0.3em] uppercase font-semibold">
-            Est. 1981
-          </span>
-          <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold-500" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center py-5 sm:py-6">
+        {/* Logo + Name */}
+        <div className="flex items-center justify-center gap-4">
+          <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full overflow-hidden border-2 border-gold-400/30 shadow-md bg-white">
+            <img 
+              src="/narad-logo.jpg" 
+              alt="NARAD Logo" 
+              className="w-full h-full object-cover scale-[1.6] -translate-y-[15%]"
+            />
+          </div>
+          <div>
+            <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-black text-brand-950 tracking-tight leading-none">
+              NARAD
+            </h1>
+            <p className="mt-1 text-stone-500 text-[10px] sm:text-xs font-mono tracking-[0.15em] uppercase">
+              Network for Adaptive, Reliable & Accessible Discovery
+            </p>
+          </div>
         </div>
-
-        <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-black text-brand-950 tracking-tight leading-none">
-          The Dayalbagh Spectrum
-        </h1>
-
-        <p className="mt-2 text-stone-500 text-sm sm:text-base font-light italic tracking-wide">
-          AI-Powered News Intelligence for the Curious Mind
-        </p>
 
         {/* Bottom decorative divider */}
         <div className="flex items-center justify-center gap-3 mt-4">

@@ -1,13 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { newsDatabase, allCategories } from '../data/mockData';
 import { fetchLiveNews } from '../services/newsService';
 
-export default function NewsFeed({ activeTab, onSelectStory }) {
+// Helper: get seen article IDs from localStorage
+const getSeenIds = () => {
+  const saved = localStorage.getItem('seenArticles');
+  return saved ? JSON.parse(saved) : [];
+};
+
+// Helper: save seen article ID to localStorage
+const markAsSeen = (id) => {
+  const seen = getSeenIds();
+  if (!seen.includes(id)) {
+    seen.push(id);
+    if (seen.length > 200) seen.splice(0, seen.length - 200);
+    localStorage.setItem('seenArticles', JSON.stringify(seen));
+  }
+};
+
+export default function NewsFeed({ activeTab, userTopics, onSelectStory }) {
   const [articles, setArticles] = useState(newsDatabase);
   const [loading, setLoading] = useState(false);
   const [isLive, setIsLive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Load seen IDs ONCE on mount — won't change during this session
+  const [seenIds] = useState(getSeenIds());
 
   // Load preferences from onboarding (saved in localStorage)
   const [userPreferences] = useState(() => {
@@ -36,6 +55,11 @@ export default function NewsFeed({ activeTab, onSelectStory }) {
 
   useEffect(() => { loadNews(); }, [activeTab, selectedCategory]);
 
+  // Handle hover → silently save to localStorage (badge stays this session)
+  const handleHover = useCallback((id) => {
+    markAsSeen(id);
+  }, []);
+
   const filteredArticles = articles.filter((article) => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
@@ -46,8 +70,17 @@ export default function NewsFeed({ activeTab, onSelectStory }) {
     );
   });
 
-  const heroArticle = filteredArticles[0];
-  const remainingArticles = filteredArticles.slice(1);
+  // Sort: unseen articles first, then seen — newest first within each group
+  const sortedArticles = [...filteredArticles].sort((a, b) => {
+    const aIsSeen = seenIds.includes(a.id);
+    const bIsSeen = seenIds.includes(b.id);
+    if (aIsSeen !== bIsSeen) return aIsSeen ? 1 : -1;
+    return (b.timestamp || 0) - (a.timestamp || 0);
+  });
+
+  const unreadCount = sortedArticles.filter((a) => !seenIds.includes(a.id)).length;
+  const heroArticle = sortedArticles[0];
+  const remainingArticles = sortedArticles.slice(1);
 
   return (
     <div className="space-y-10 animate-fadeIn">
@@ -74,6 +107,16 @@ export default function NewsFeed({ activeTab, onSelectStory }) {
           </div>
         </div>
       </div>
+
+      {/* ─── New Stories Notification ─── */}
+      {unreadCount > 0 && (
+        <div className="animate-fadeInUp text-center">
+          <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-900 text-white text-sm font-semibold rounded-full shadow-lg shadow-brand-900/20">
+            <span className="text-base">🔔</span>
+            {unreadCount} new {unreadCount === 1 ? 'story' : 'stories'} since your last visit
+          </span>
+        </div>
+      )}
 
       {/* ─── NATIONAL & WORLD: Category Filter ─── */}
       {activeTab === 'national' && (
@@ -141,15 +184,22 @@ export default function NewsFeed({ activeTab, onSelectStory }) {
       )}
 
       {/* ─── MAGAZINE LAYOUT ─── */}
-      {!loading && filteredArticles.length > 0 && (
+      {!loading && sortedArticles.length > 0 && (
         <div className="space-y-10">
 
           {/* ★ HERO ARTICLE */}
           {heroArticle && (
             <article
               onClick={() => onSelectStory(heroArticle)}
-              className="animate-fadeInUp group cursor-pointer bg-white border border-parchment rounded-3xl overflow-hidden card-hover"
+              onMouseEnter={() => handleHover(heroArticle.id)}
+              className="animate-fadeInUp group cursor-pointer bg-white border border-parchment rounded-3xl overflow-hidden card-hover relative"
             >
+              {/* NEW Badge */}
+              {!seenIds.includes(heroArticle.id) && (
+                <span className="absolute top-5 right-5 z-10 bg-red-500 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-full tracking-wider shadow-lg animate-pulse">
+                  NEW
+                </span>
+              )}
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 {heroArticle.imageUrl && (
                   <div className="h-72 lg:h-[28rem] overflow-hidden relative">
@@ -205,8 +255,15 @@ export default function NewsFeed({ activeTab, onSelectStory }) {
                 <article
                   key={article.id}
                   onClick={() => onSelectStory(article)}
-                  className={`animate-fadeInUp delay-${Math.min(index + 1, 6)} group cursor-pointer bg-white border border-parchment rounded-2xl overflow-hidden card-hover flex flex-col`}
+                  onMouseEnter={() => handleHover(article.id)}
+                  className={`animate-fadeInUp delay-${Math.min(index + 1, 6)} group cursor-pointer bg-white border border-parchment rounded-2xl overflow-hidden card-hover flex flex-col relative`}
                 >
+                  {/* NEW Badge */}
+                  {!seenIds.includes(article.id) && (
+                    <span className="absolute top-3 right-3 z-10 bg-red-500 text-white text-[9px] font-bold uppercase px-2.5 py-0.5 rounded-full tracking-wider shadow-md animate-pulse">
+                      NEW
+                    </span>
+                  )}
                   {article.imageUrl && (
                     <div className="h-52 overflow-hidden relative">
                       <img
